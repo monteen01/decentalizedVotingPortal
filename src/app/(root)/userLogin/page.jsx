@@ -39,7 +39,7 @@ const Login = () => {
     if (user) {
       setIsValid(true);
       // setEmail(email)
-
+    
        send(email,Gen)
        setCounter(1)
       alert('OTP generated');
