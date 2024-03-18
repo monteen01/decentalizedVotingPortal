@@ -25,29 +25,30 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
       
-      const Gen=genrateOtp()
-      alert(Gen)
+      // const Gen=genrateOtp()
+      // alert(Gen)
      
   
      
     const user = Object.values(voterUsers).find(
-      user => user.voterID === voterID 
+      user => user.voterID
     );
     //  var email=user.email
      
     //  console.log(email)
-    if (user) {
+    if (user.voterID===voterID ) {
       setIsValid(true);
       // setEmail(email)
-
+      const Gen=genrateOtp()
+      alert('OTP generated');
+      alert(Gen)
        send(email,Gen)
        setCounter(1)
-      alert('OTP generated');
       
       
     } else {
       setIsValid(false);
-      alert('Invalid username or email!');
+      alert('invalid ID');
     }
   };
   const verify= async function(e){
@@ -106,7 +107,7 @@ const Login = () => {
              </>  
         
         }
-        {!isValid && <p style={{ color: 'red' }}>Invalid username or email!</p>}
+        {!isValid && <p style={{ color: 'red' }}>User!</p>}
         {!isVerified && <p style={{ color: 'red' }}>Wrong Otp</p>}
         <div className='flex gap-1 w-full justify-center items-center text-center my-4'>
         <p> Are you admin?</p>
