@@ -1,8 +1,11 @@
+export const admin={
+    password:'admin123'
+}
 export const voterUsers = {
   user1: {
     userName: "leo",
     email: "orarytemp002@gmail.com",
-    voterID: "abc123abc123",
+    voterID: "abc3abc123",
     dateOfBirth: "20-05-2002",
     place: "ambattur",
     bloodroup: "O+ve",
@@ -20,7 +23,7 @@ export const voterUsers = {
   user3: {
     userName: "dskarthi",
     email: "ronu7015@gmail.com",
-    voterID: "abc123abc123",
+    voterID: "abc123a123",
     dateOfBirth: "20-05-2002",
     place: "manali",
     bloodroup: "O+ve",
