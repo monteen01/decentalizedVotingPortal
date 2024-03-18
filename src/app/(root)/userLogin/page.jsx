@@ -26,16 +26,16 @@ const Login = () => {
     e.preventDefault();
       
       const Gen=genrateOtp()
-      console.log(Gen)
+      alert(Gen)
      
   
      
     const user = Object.values(voterUsers).find(
       user => user.voterID === voterID 
     );
-     var email=user.email
+    //  var email=user.email
      
-     console.log(email)
+    //  console.log(email)
     if (user) {
       setIsValid(true);
       // setEmail(email)
