@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.5.0 <0.9.0;
 
-contract VotingSystem {
+contract VotingSystem{
     address public admin;
-
+    string public winningParty;
+    uint public Seats = 0;
     struct Candidate {
         uint id;
         string name;
@@ -12,16 +13,28 @@ contract VotingSystem {
         uint voteCount;
     }
 
-    struct Party {
+    string[] public Ar;
+    struct Area {
         string name;
-        uint wonSeats;
+        string leadingParty;
+        uint totalVote;
+
+    }
+
+    string[] public Pr;
+    struct Party{
+        string name;
+        uint totalSeatsWon;
     }
 
     mapping(uint => Candidate) public candidates;
-    mapping(string => mapping(string => string)) public currentLeadingCandidate; 
-    mapping(string => mapping(string => uint)) public seatsWonByParty; 
+    mapping (string => Area) public areas;
+    mapping (string => Party) public parties;
 
     uint public candidatesCount;
+    uint public areasCount;
+    uint public partiesCount;
+
     mapping(address => bool) public voters;
 
     modifier onlyAdmin() {
@@ -36,6 +49,25 @@ contract VotingSystem {
     function addCandidate(string memory _name, string memory _area, string memory _party) public onlyAdmin {
         candidatesCount++;
         candidates[candidatesCount] = Candidate(candidatesCount, _name, _area, _party, 0);
+        if(keccak256(abi.encodePacked(_area)) == keccak256(abi.encodePacked(areas[_area].name))){
+            //
+        }
+        else{
+            areasCount++;
+            areas[_area]=Area(_area,"",0);
+            Ar.push(_area);
+        }
+        
+        if(keccak256(abi.encodePacked(_party)) == keccak256(abi.encodePacked(parties[_party].name))){
+            //
+        }
+        else{
+            partiesCount++;
+            parties[_party]=Party(_party,0);
+            Pr.push(_party);
+        }
+        
+        
     }
 
     function vote(uint _candidateId) public {
@@ -44,28 +76,27 @@ contract VotingSystem {
         Candidate storage candidate = candidates[_candidateId];
         candidate.voteCount++;
         voters[msg.sender] = true;
-
-        string storage currentLeading = currentLeadingCandidate[candidate.area][""];
-        if (keccak256(abi.encodePacked(currentLeading)) == keccak256(abi.encodePacked("")) || candidates[uint(keccak256(abi.encodePacked(currentLeading)))].voteCount < candidate.voteCount) {
-            currentLeadingCandidate[candidate.area][""] = candidate.name;
-            currentLeadingCandidate[candidate.area][candidate.party] = candidate.name;
-            seatsWonByParty[candidate.party][candidate.area]++;
+    
+        if(areas[candidate.area].totalVote<candidate.voteCount){
+            areas[candidate.area].totalVote=candidate.voteCount;
+            areas[candidate.area].leadingParty=candidate.party;
         }
+        
+    }
+    function calculateWinner() public{
+        for(uint i=0;i<areasCount;i++){
+            parties[areas[Ar[i]].leadingParty].totalSeatsWon++;
+        }
+        for(uint i=0;i<partiesCount;i++){
+            if(parties[Pr[i]].totalSeatsWon>Seats){
+                Seats=parties[Pr[i]].totalSeatsWon;
+                winningParty=Pr[i];
+            }
+        }
+
     }
 
     function getOverallWinningParty() public view returns (string memory, uint) {
-        string memory winningParty;
-        uint maxSeats = 0;
-        for (uint i = 1; i <= candidatesCount; i++) {
-            uint seats = 0;
-            for (uint j = 1; j <= candidatesCount; j++) {
-                seats += seatsWonByParty[candidates[i].party][candidates[j].area];
-            }
-            if (seats > maxSeats) {
-                winningParty = candidates[i].party;
-                maxSeats = seats;
-            }
-        }
-        return (winningParty, maxSeats);
+        return(winningParty,Seats);
     }
 }
