@@ -7,7 +7,7 @@ export const voterUsers = {
     email: "orarytemp002@gmail.com",
     voterID: "12344321",
     dateOfBirth: "20-05-2002",
-    place: "ambattur",
+    place: "chennai",
     bloodroup: "O+ve",
     gender: "male",
   },
@@ -28,19 +28,5 @@ export const voterUsers = {
     place: "manali",
     bloodroup: "O+ve",
     gender: "male",
-  },
-};
-
-export const candiateUsers = {
-  manali: {
-    BJP: "Annamali",
-    congress: "Modi",
-    VTK: "vijay",
-  },
-  ambattur: {
-    BJP: "Annamali",
-    congress: "Modi",
-    VTK: "vijay",
-    NTK: "seeman",
   },
 };

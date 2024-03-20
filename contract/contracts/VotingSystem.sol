@@ -69,12 +69,12 @@ contract VotingSystem{
         
     }
 
-    //remove candidates
-        function removeCandidate(uint _candidateId) public onlyAdmin {
+    // remove candidates
+    function removeCandidate(uint _candidateId) public onlyAdmin {
         require(_candidateId > 0 && _candidateId <= candidatesCount, "Invalid candidate ID");
         delete candidates[_candidateId];
         // You might want to implement logic here to reorganize candidate IDs if needed
-    }
+     }
 
     function vote(uint _candidateId) public {
         require(!voters[msg.sender], "You have already voted");

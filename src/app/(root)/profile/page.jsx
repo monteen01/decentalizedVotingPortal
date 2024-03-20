@@ -56,31 +56,6 @@ const profile = () => {
     fetchCandidates();
   }, [contract]);
 
-  // const voteForCandidate = async () => {
-  //   try {
-  //     setLoading(true);
-  //     await contract.methods.vote(selectedCandidate.id).send({
-  //       from: (await web3.eth.getAccounts())[0],
-  //       gas: 6000000,
-  //     });
-  //     alert(
-  //       `You have successfully voted for ${selectedCandidate.name} from ${selectedCandidate.area} representing ${selectedCandidate.party}`
-  //     );
-  //     // Refresh candidates after vote
-  //     setCandidates((prevCandidates) =>
-  //       prevCandidates.map((candidate) =>
-  //         candidate.id === selectedCandidate.id
-  //           ? { ...candidate, voteCount: candidate.voteCount + 1 }
-  //           : candidate
-  //       )
-  //     );
-  //   } catch (error) {
-  //     console.error("Error voting:", error);
-  //     setError("Failed to vote");
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
   const voteForCandidate = async () => {
     try {
       setLoading(true);
