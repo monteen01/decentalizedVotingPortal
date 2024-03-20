@@ -1,24 +1,10 @@
 import React from "react";
-
+import { voterUsers } from "../constants/index";
 const VotersArea = () => {
+  // const user = voterUsers[user];
+  const { userName, voterID } = voterUsers.user1;
   return (
     <div className="min-w-full min-h-[100vh] font-sans overflow-hidden  bg-gradient-to-b from-zinc-900 to-blue-600 text-[#FFF3C7] p-2 ">
-      {/* navbar section */}
-      {/* <nav className="flex justify-between  items-center ">
-        <div className="">Voters Area</div>
-        <div className="flex justify-center items-center">
-          <h1 className="px-3 mx-2  border rounded-lg py-1 cursor-pointer hover:bg-blue-500">
-            home
-          </h1>
-          <h1 className="px-3 mx-2 border rounded-lg py-1 cursor-pointer hover:bg-blue-500">
-            help
-          </h1>
-          <h1 className="px-3 mx-2 border rounded-lg py-1 cursor-pointer hover:bg-blue-500">
-            Voters
-          </h1>
-        </div>
-      </nav> */}
-      {/* welcome header section */}
       <section className="mt-2 mx-3 flex justify-between overflow-hidden">
         <header className="relative flex max-w-screen-xl flex-col overflow-hidden px-4 py-4 md:mx-auto md:flex-row md:items-center text-slate-700">
           <div class="relative mx-auto px-4 pt-16 sm:max-w-xl md:max-w-full md:px-8 lg:py-32 xl:px-20">
@@ -39,7 +25,7 @@ const VotersArea = () => {
                 </div>
                 <div class="flex items-center">
                   <a
-                    href="/votersArea/voteNow"
+                    href="/profile"
                     class="mr-6 inline-flex h-12 items-center justify-center rounded bg-gradient-to-r from-blue-900 to-blue-500 px-6 font-medium tracking-wide text-white shadow-md outline-none transition duration-200 hover:bg-cyan-400 focus:ring"
                   >
                     {" "}
@@ -63,7 +49,7 @@ const VotersArea = () => {
               <div className="flex justify-between">
                 <div className="">
                   <p className="font-light">Voter Vitrual ID</p>
-                  <p className="font-medium tracking-widest">kamalaKannan</p>
+                  <p className="font-medium tracking-widest">{userName}</p>
                 </div>
                 <img
                   className="h-14 w-14 object-fill rounded-full"
@@ -72,7 +58,7 @@ const VotersArea = () => {
               </div>
               <div className="pt-1">
                 <p className="font-light">Card Number</p>
-                <p className=" font-medium">4312 XXX 7890 XXXX</p>
+                <p className=" font-medium">{voterID}</p>
               </div>
               <div className="pt-4 pr-6 sm:pt-6">
                 <div className="flex justify-between">
