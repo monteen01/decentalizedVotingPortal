@@ -35,6 +35,10 @@ contract VotingSystem{
     uint public partiesCount;
 
     mapping(address => bool) public voters;
+    //!additional function mapping
+  mapping(string => uint) public totalCandidateVotes;
+  mapping(string => uint) public totalPartyVotes;
+  mapping(string => uint) public totalAreaVotes;
 
     modifier onlyAdmin() {
         require(msg.sender == admin, "Only admin can perform this action");
@@ -89,6 +93,26 @@ contract VotingSystem{
         }
         
     }
+
+    //! additional function
+function calculateTotalVotes() public {
+    // Iterate through candidates and calculate total votes for each candidate
+    for (uint i = 1; i <= candidatesCount; i++) {
+        totalCandidateVotes[candidates[i].name] = candidates[i].voteCount;
+    }
+
+    // Iterate through parties and calculate total votes for each party
+    for (uint i = 0; i < Pr.length; i++) {
+        totalPartyVotes[Pr[i]] = parties[Pr[i]].totalSeatsWon;
+    }
+
+    // Iterate through areas and calculate total votes for each area
+    for (uint i = 0; i < Ar.length; i++) {
+        totalAreaVotes[Ar[i]] = areas[Ar[i]].totalVote;
+    }
+}
+
+
     function calculateWinner() public{
         for(uint i=0;i<areasCount;i++){
             parties[areas[Ar[i]].leadingParty].totalSeatsWon++;

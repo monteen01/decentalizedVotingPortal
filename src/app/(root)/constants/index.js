@@ -3,8 +3,8 @@ export const admin = {
 };
 export const voterUsers = {
   user1: {
-    userName: "leo",
-    email: "orarytemp002@gmail.com",
+    userName: "kamal",
+    email: "ronu7015@gmail.com",
     voterID: "12344321",
     dateOfBirth: "20-05-2002",
     place: "chennai",
@@ -12,7 +12,7 @@ export const voterUsers = {
     gender: "male",
   },
   user2: {
-    userName: "karthi",
+    userName: "aashish",
     email: "aashishcoc007@gmail.com",
     voterID: "987654321",
     dateOfBirth: "20-05-2002",
@@ -22,8 +22,8 @@ export const voterUsers = {
   },
   user3: {
     userName: "dskarthi",
-    email: "ronu7015@gmail.com",
-    voterID: "abc123a123",
+    email: "abc@gmail.com",
+    voterID: "1234567890",
     dateOfBirth: "20-05-2002",
     place: "manali",
     bloodroup: "O+ve",

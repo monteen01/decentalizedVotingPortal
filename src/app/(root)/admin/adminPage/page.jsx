@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import VotingSystem from "../../../../../contract/build/contracts/VotingSystem.json";
 import Web3 from "web3";
 import Navbar from "../../../../components/Navbar";
-// import Link from "next/link";
+import { Toaster, toast } from "react-hot-toast";
 const adminPage = () => {
   const [web3, setWeb3] = useState(null);
   const [contract, setContract] = useState(null);
@@ -16,7 +16,22 @@ const adminPage = () => {
   // displaying the winner
   const [winningParty, setWinningParty] = useState("");
   const [winningSeats, setWinningSeats] = useState(0);
-
+  //testing
+  const [totalCandidateVotes, setTotalCandidateVotes] = useState({});
+  const [totalPartyVotes, setTotalPartyVotes] = useState({});
+  const [totalAreaVotes, setTotalAreaVotes] = useState({});
+  // toast
+  const successToast = (message) => {
+    toast.success(message, {
+      position: "top-center", // Adjust position as desired
+      autoClose: 5000, // Close after 5 seconds
+    });
+  };
+  const errorToast = (message) => {
+    toast.error(message, {
+      position: "top-center", // Adjust position as desired
+    });
+  };
   useEffect(() => {
     const initializeWeb3 = async () => {
       try {
@@ -44,12 +59,12 @@ const adminPage = () => {
       if (contract) {
         const candidatesCount = await contract.methods
           .candidatesCount()
-          .call({ gas: 5000000 }); // Set the gas limit here
+          .call({ gas: 5000000 });
         const candidatesArray = [];
         for (let i = 1; i <= candidatesCount; i++) {
           const candidate = await contract.methods
             .candidates(i)
-            .call({ gas: 5000000 }); // Set the gas limit here
+            .call({ gas: 5000000 });
           candidatesArray.push(candidate);
         }
         setCandidates(candidatesArray);
@@ -70,7 +85,7 @@ const adminPage = () => {
       await contract.methods
         .addCandidate(name, area, party)
         .send({ from: (await web3.eth.getAccounts())[0], gas: 6000000 });
-      alert("Candidate added successfully!");
+      successToast("Candidate added successfully!");
       setName("");
       setArea("");
       setParty("");
@@ -78,7 +93,7 @@ const adminPage = () => {
       fetchCandidates();
     } catch (error) {
       console.error("Error adding candidate:", error);
-      setError("Failed to add candidate");
+      errorToast("Failed to add candidate");
     } finally {
       setLoading(false);
     }
@@ -92,7 +107,7 @@ const adminPage = () => {
         from: (await web3.eth.getAccounts())[0],
         gas: 6000000,
       });
-      alert("Candidate removed successfully!");
+      successToast("Candidate removed successfully!");
       setLoading(false);
       // Refresh candidates after removal
       fetchCandidates();
@@ -114,13 +129,14 @@ const adminPage = () => {
         from: (await web3.eth.getAccounts())[0],
         gas: 6000000,
       });
-      alert("Winning party calculated successfully!");
+      successToast("Winning party calculated successfully!");
       // Fetch the winning party and seats
       const winningParty = await contract.methods
         .getOverallWinningParty()
         .call();
       setWinningParty(winningParty[0]);
       setWinningSeats(winningParty[1]);
+      console.log(winningParty[0]);
     } catch (error) {
       console.error("Error calculating winner:", error);
       setError("Failed to calculate winner");
@@ -128,10 +144,37 @@ const adminPage = () => {
       setLoading(false);
     }
   };
+  //!calucate the votes
+  // const calculateTotalVotes = async () => {
+  //   try {
+  //     setLoading(true);
+  //     await contract.methods.calculateTotalVotes().send({
+  //       from: (await web3.eth.getAccounts())[0],
+  //       gas: 6000000,
+  //     });
+  //     alert("Total votes calculated successfully!");
+  //     // Fetch and update total votes for candidates, parties, and areas
+  //     const candidateVotes = await contract.methods
+  //       .totalCandidateVotes()
+  //       .call();
+  //     const partyVotes = await contract.methods.totalPartyVotes().call();
+  //     const areaVotes = await contract.methods.totalAreaVotes().call();
+  //     setTotalCandidateVotes(candidateVotes);
+  //     setTotalPartyVotes(partyVotes);
+  //     setTotalAreaVotes(areaVotes);
+  //     console.log(candidateVotes, areaVotes, partyVotes);
+  //   } catch (error) {
+  //     console.error("Error calculating total votes:", error);
+  //     setError("Failed to calculate total votes: " + error.message);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <div className="">
       <Navbar />
+      <Toaster />
       <div className="flex justify-between w-full items-center">
         <div className="relative flex justify-between flex-col sm:w-[30rem] rounded-lg border-gray-400 bg-white shadow-lg px-4">
           <div className="flex-auto p-6">
@@ -229,15 +272,60 @@ const adminPage = () => {
           </button>
           {/* Display winning party and seats */}
           {winningParty && (
-            <div className="mt-4">
-              <p className="font-semibold uppercase">
+            <div className="mt-4 flex justify-center items-center border rounded-lg shadow-md px-3 py-2  hover:bg-green-300 border-green-400 transition-colors">
+              <p className="font-semibold capitalize ">
                 Winning Party: {winningParty}
               </p>
-              <p className="font-semibold">Seats: {winningSeats}</p>
+              {/* <p className="font-semibold">Seats: {winningSeats}</p> */}
             </div>
           )}
         </div>
       </div>
+      {/* calculate the votes */}
+      {/* <div className="flex justify-between w-full items-center">
+        <div className="relative flex justify-between flex-col sm:w-[30rem] rounded-lg border-gray-400 bg-white shadow-lg px-4">
+          <div className="flex-auto p-6">
+            <h1 className="font-bold text-xl mb-2">Calculate Total Votes</h1>
+            <button
+              type="button"
+              className="grid cursor-pointer select-none rounded-md border border-slate-500 bg-slate-500 py-2 px-5 text-center align-middle text-sm text-white shadow hover:border-slate-600 hover:bg-slate-600 hover:text-white focus:border-slate-600 focus:bg-slate-600 focus:text-white focus:shadow-none"
+              onClick={calculateTotalVotes}
+              disabled={loading}
+            >
+              Calculate Total Votes
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="p-6 overflow-auto">
+        <h2 className="mb-4 text-lg font-semibold">Total Votes:</h2>
+        <div>
+          <h3 className="text-lg font-semibold">Candidates:</h3>
+          {Object.keys(totalCandidateVotes).map((candidateName, index) => (
+            <p key={index}>
+              {candidateName}: {totalCandidateVotes[candidateName]}
+            </p>
+          ))}
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold">Parties:</h3>
+          {Object.keys(totalPartyVotes).map((partyName, index) => (
+            <p key={index}>
+              {partyName}: {totalPartyVotes[partyName]}
+            </p>
+          ))}
+        </div>
+        <div>
+          <h3 className="text-lg font-semibold">Areas:</h3>
+          {Object.keys(totalAreaVotes).map((areaName, index) => (
+            <p key={index}>
+              {areaName}: {totalAreaVotes[areaName]}
+            </p>
+          ))}
+        </div>
+        {loading && <p>Loading...</p>}
+        {error && <p style={{ color: "red" }}>{error}</p>}
+      </div> */}
     </div>
   );
 };

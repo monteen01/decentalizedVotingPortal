@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import Web3 from "web3";
 import VotingSystem from "../../../../contract/build/contracts/VotingSystem.json";
 import Navbar from "../../../components/Navbar";
+import { Toaster, toast } from "react-hot-toast";
+
 const profile = () => {
   const [web3, setWeb3] = useState(null);
   const [contract, setContract] = useState(null);
@@ -11,7 +13,17 @@ const profile = () => {
   const [selectedCandidate, setSelectedCandidate] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-
+  const successToast = (message) => {
+    toast.success(message, {
+      position: "top-center", // Adjust position as desired
+      autoClose: 5000, // Close after 5 seconds
+    });
+  };
+  const errorToast = (message) => {
+    toast.error(message, {
+      position: "top-center", // Adjust position as desired
+    });
+  };
   useEffect(() => {
     const initializeWeb3 = async () => {
       try {
@@ -63,7 +75,7 @@ const profile = () => {
         from: (await web3.eth.getAccounts())[0],
         gas: 6000000,
       });
-      alert(
+      successToast(
         `You have successfully voted for ${selectedCandidate.name} from ${selectedCandidate.area} representing ${selectedCandidate.party}`
       );
       // Refresh candidates after vote
@@ -76,7 +88,7 @@ const profile = () => {
       );
     } catch (error) {
       console.error("Error voting:", error);
-      setError("Failed to vote");
+      errorToast("Failed to vote");
     } finally {
       setLoading(false);
     }
@@ -85,6 +97,8 @@ const profile = () => {
   return (
     <div>
       <Navbar />
+      <Toaster />
+
       <div>
         <h1>Candidates:</h1>
         <ul className="flex justify-evenly items-center my-2 mx-2 py-2 px-3">
