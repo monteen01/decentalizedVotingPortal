@@ -42,10 +42,14 @@ const adminPage = () => {
   const fetchCandidates = async () => {
     try {
       if (contract) {
-        const candidatesCount = await contract.methods.candidatesCount().call();
+        const candidatesCount = await contract.methods
+          .candidatesCount()
+          .call({ gas: 5000000 }); // Set the gas limit here
         const candidatesArray = [];
         for (let i = 1; i <= candidatesCount; i++) {
-          const candidate = await contract.methods.candidates(i).call();
+          const candidate = await contract.methods
+            .candidates(i)
+            .call({ gas: 5000000 }); // Set the gas limit here
           candidatesArray.push(candidate);
         }
         setCandidates(candidatesArray);
