@@ -1,8 +1,9 @@
+import Link from "next/link";
 import React from "react";
 // import Link from "next/link"
 const Navbar = () => {
   return (
-    <header className="shadow mb-2">
+    <header className="shadow ">
       <div className="relative flex max-w-screen-xl flex-col overflow-hidden px-4 py-4 md:mx-auto md:flex-row md:items-center">
         <a
           href="#"
@@ -40,15 +41,18 @@ const Navbar = () => {
               <a href="/votersArea">Vote Area</a>
             </li>
             <li className="text-gray-600 md:mr-12 hover:text-blue-600">
-              <a href="#">Info</a>
+              <a href="/admin">Admin</a>
             </li>
             <li className="text-gray-600 md:mr-12 hover:text-blue-600">
-              <a href="#">candidate</a>
+              <a href="/">candidate</a>
             </li>
-            <li className="text-gray-600 md:mr-12 hover:text-blue-600">
-              <button className="rounded-md border-2 border-blue-600 px-6 py-1 font-medium text-blue-600 transition-colors hover:bg-blue-600 hover:text-white">
+            <li className="text-gray-600 md:mr-12 py-2 hover:text-blue-600">
+              <Link
+                href="/"
+                className="rounded-md border-2 border-blue-600 px-6 py-1  font-medium text-blue-600 transition-colors hover:bg-blue-600 hover:text-white"
+              >
                 Logout
-              </button>
+              </Link>
             </li>
           </ul>
         </nav>

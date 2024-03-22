@@ -18,9 +18,8 @@ const VotersArea = () => {
                       Web 3.0
                     </span>
                   </h2>
-                  <p className="text-base text-gray-100 md:text-lg">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Eos, consequuntur quaerat! Optio.
+                  <p className="text-sm text-gray-100 md:text-lg font-medium">
+                    change the future with you digital Finger 👆
                   </p>
                 </div>
                 <div className="flex items-center">
@@ -32,7 +31,7 @@ const VotersArea = () => {
                     Get started{" "}
                   </a>
                   <a
-                    href="/"
+                    href="/profile"
                     aria-label=""
                     className="inline-flex items-center font-semibold text-cyan-600 transition-colors duration-200 hover:text-cyan-400"
                   >
@@ -43,8 +42,8 @@ const VotersArea = () => {
             </div>
           </div>
         </header>
-        <div className="my-10 mx-20 space-y-16 mt-[11rem]">
-          <div className="relative m-auto h-48 w-80 rounded-xl bg-gradient-to-r from-slate-500 to-slate-800 text-white shadow-2xl transition-transform sm:h-56 sm:w-96 sm:hover:scale-110">
+        <div className="my-10 mr-20 space-y-16 mt-[11rem]">
+          <div className="relative m-auto h-48 w-80 rounded-xl bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-2xl transition-transform sm:h-56 sm:w-96 sm:hover:scale-110">
             <div className="absolute top-4 w-full px-8 sm:top-8">
               <div className="flex justify-between">
                 <div className="">

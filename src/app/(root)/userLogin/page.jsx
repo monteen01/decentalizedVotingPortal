@@ -16,7 +16,7 @@ const Login = () => {
   const [counter, setCounter] = useState("0");
   const [genOtp, setGenOtp] = useState("");
 
-  const route = useRouter();
+  const router = useRouter();
   function genrateOtp() {
     const Gen = crypto.randomBytes(6).toString("hex").toUpperCase().slice(0, 6);
     setGenOtp(Gen);
@@ -55,53 +55,54 @@ const Login = () => {
       errorToast("invalid ID");
     }
   };
-  const verify = async function (e) {
+  const verify = async (e) => {
     e.preventDefault();
     if (genOtp === otp) {
       setIsVerified(true);
-      route.push("/votersArea");
+      router.push("/votersArea");
     } else {
       setIsVerified(false);
-      errorToast("wrong Otp");
+      toast.error("Wrong OTP", {
+        position: "top-center",
+      });
     }
   };
 
   return (
-    <div className="flex min-h-screen w-screen  items-center justify-center text-gray-600 bg-gray-50">
+    <div className="flex min-h-screen w-screen  items-center justify-center text-gray-600 bg-gray-50 bg-gradient-to-r from-[#1488CC] to-[#2B32B2]">
       <Toaster />
 
-      <div className="relative">
+      <div className="relative ">
         <div className="relative flex flex-col sm:w-[30rem] rounded-lg border-gray-400 bg-white shadow-lg px-4">
           <div className="flex-auto p-6">
-            <div className="mb-10 flex flex-shrink-0 flex-grow-0 items-center justify-center overflow-hidden">
-              <span className="flex  items-center gap-2 text-slate-600 no-underline flex-shrink-0 text-3xl font-black lowercase tracking-tight opacity-100">
+            <div className="mb-5 flex flex-shrink-0 flex-grow-0 items-center justify-center overflow-hidden">
+              <span className="text-3xl font-bold text-center text-gray-800 mb-6">
                 Login
               </span>
             </div>
             <form id="" className="mb-4" method="POST">
-              <div className="mb-4">
-                <label className="mb-2 inline-block text-xs font-medium uppercase text-gray-700">
-                  {" "}
-                  Id
+              <div>
+                <label
+                  htmlFor="voterID"
+                  className="block text-sm font-medium text-gray-700"
+                >
+                  Voter ID
                 </label>
                 <input
                   type="text"
-                  className="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-red-500 focus:bg-white focus:text-gray-600 focus:shadow"
-                  id="email"
-                  name="name"
-                  placeholder="Enter your  voterId"
+                  id="voterID"
+                  className="my-3 py-2 px-1 border-b-2 focus:border-b-0 outline-none block w-full rounded-md border-blue-500 shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                  placeholder="Enter your voter ID"
                   value={voterID}
-                  onChange={(e) => {
-                    setVoterID(e.target.value);
-                  }}
+                  onChange={(e) => setVoterID(e.target.value)}
                 />
+                {!isValid && <p className="mt-1 text-red-500">Invalid ID</p>}
               </div>
 
-              <div className="mb-4"></div>
               {counter == 0 ? (
                 <button
                   type="submit"
-                  className="grid  cursor-pointer select-none rounded-md border border-slate-500 bg-slate-500 py-2 px-5 text-center align-middle text-sm text-white shadow hover:border-slate-600 hover:bg-slate-600 hover:text-white focus:border-slate-600 focus:bg-slate-600 focus:text-white focus:shadow-none"
+                  className="grid w-full shadow-md   cursor-pointer select-none rounded-md border border-blue-500 bg-blue-500 py-2 px-5 text-center align-middle text-sm text-white  hover:border-blue-600 hover:bg-blue-600  outline-blue-500 hover:text-white focus:border-blue-600 focus:bg-slate-600 focus:text-white focus:shadow-none"
                   onClick={handleSubmit}
                 >
                   Generate OTP
@@ -116,10 +117,10 @@ const Login = () => {
                     onChange={(e) => setOtp(e.target.value)}
                   />
                   <button
-                    className="grid my-3 cursor-pointer select-none rounded-md border border-slate-500 bg-slate-500 py-2 px-5 text-center align-middle text-sm text-white shadow hover:border-slate-600 hover:bg-slate-600 hover:text-white focus:border-slate-600 focus:bg-slate-600 focus:text-white focus:shadow-none"
+                    className="grid w-full font-medium capitalize my-3 cursor-pointer select-none rounded-md border border-slate-500 bg-slate-500 py-2 px-5 text-center align-middle text-sm text-white shadow hover:border-slate-600 hover:bg-slate-600 hover:text-white focus:border-slate-600 focus:bg-slate-600 focus:text-white focus:shadow-none"
                     onClick={verify}
                   >
-                    Enter
+                    Vote Now 👆
                   </button>
                 </>
               )}

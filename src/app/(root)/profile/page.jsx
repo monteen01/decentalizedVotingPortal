@@ -6,7 +6,7 @@ import VotingSystem from "../../../../contract/build/contracts/VotingSystem.json
 import Navbar from "../../../components/Navbar";
 import { Toaster, toast } from "react-hot-toast";
 
-const profile = () => {
+const Profile = () => {
   const [web3, setWeb3] = useState(null);
   const [contract, setContract] = useState(null);
   const [candidates, setCandidates] = useState([]);
@@ -99,50 +99,52 @@ const profile = () => {
       <Navbar />
       <Toaster />
 
-      <div>
-        <h1>Candidates:</h1>
-        <ul className="flex justify-evenly items-center my-2 mx-2 py-2 px-3">
+      <div className="bg-gradient-to-r from-[#1488CC] to-[#2B32B2] min-h-screen flex flex-col justify-center items-center ">
+        <h1 className="text-3xl font-semibold text-white mb-6">Candidates:</h1>
+        <ul className="flex justify-between gap-3">
           {candidates.map((candidate) => (
-            <li key={candidate.id}>
-              <p>Name: {candidate.name}</p>
-              <p>Area: {candidate.area}</p>
-              <p>Party: {candidate.party}</p>
-              <button
-                onClick={() => setSelectedCandidate(candidate)}
-                className="px-3 py-2 border border-green-400 hover:bg-green-300 shadow-md m-3 rounded-md"
-              >
-                Vote
-              </button>
+            <li
+              key={candidate.id}
+              className="bg-white rounded-lg shadow-md p-4"
+            >
+              <p className="text-lg font-semibold">
+                Name: <span className="uppercase">{candidate.name}</span>
+              </p>
+              <p className="text-sm">Area: {candidate.area}</p>
+              <p className="text-sm">Party: {candidate.party}</p>
+              <span className="flex w-full justify-center items-center">
+                <button
+                  onClick={() => setSelectedCandidate(candidate)}
+                  className="mt-4 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600"
+                >
+                  Vote
+                </button>
+              </span>
             </li>
           ))}
         </ul>
         {selectedCandidate && (
-          <div>
-            <p>Selected Candidate: {selectedCandidate.name}</p>
-            <p>Selected Area: {selectedCandidate.area}</p>
-            <p>Selected Party: {selectedCandidate.party}</p>
+          <div className="mt-8 bg-white rounded-lg shadow-md p-4">
+            <p className="text-lg font-semibold">
+              Selected Candidate:{" "}
+              <span className="uppercase">{selectedCandidate.name}</span>
+            </p>
+            <p className="text-sm">Selected Area: {selectedCandidate.area}</p>
+            <p className="text-sm">Selected Party: {selectedCandidate.party}</p>
             <button
               onClick={voteForCandidate}
               disabled={loading}
-              className="px-3 py-2 border rounded-md border-green-400 hover:bg-green-300"
+              className="mt-4 bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 focus:outline-none focus:bg-green-600"
             >
-              Vote
+              Confirm Vote
             </button>
           </div>
         )}
-        {loading && <p>Loading...</p>}
+        {loading && <p className="text-white mt-8">Loading...</p>}
         {error && <p style={{ color: "red" }}>{error}</p>}
-        <div className="m-3 ">
-          <Link
-            className="px-3 py-2 border rounded-md border-gray-400 hover:bg-gray-300"
-            href="/admin"
-          >
-            Admin
-          </Link>
-        </div>
       </div>
     </div>
   );
 };
 
-export default profile;
+export default Profile;

@@ -38,52 +38,44 @@ const adminLogin = () => {
   };
 
   return (
-    <div className="flex min-h-screen w-screen  items-center justify-center text-gray-600 bg-gray-50">
-      <div className="relative">
+    <div className="flex min-h-screen items-center justify-center bg-gray-50 bg-gradient-to-r from-[#1488CC] to-[#2B32B2]">
+      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
         <Toaster />
-        <div className="relative flex flex-col sm:w-[30rem] rounded-lg border-gray-400 bg-white shadow-lg px-4">
-          <div className="flex-auto p-6">
-            <div className="mb-10 flex flex-shrink-0 flex-grow-0 items-center justify-center overflow-hidden">
-              <span className="flex  items-center gap-2 text-slate-600 no-underline flex-shrink-0 text-3xl font-black lowercase tracking-tight opacity-100">
-                Admin
-              </span>
-            </div>
-            <form id="" className="mb-4" method="POST">
-              <div className="mb-4">
-                <label className="mb-2 inline-block text-xs font-medium uppercase text-gray-700">
-                  {" "}
-                  Password
-                </label>
-                <input
-                  type="password"
-                  className="block w-full cursor-text appearance-none rounded-md border border-gray-400 bg--100 py-2 px-3 text-sm outline-none focus:border-red-500 focus:bg-white focus:text-gray-600 focus:shadow"
-                  id="email"
-                  name="name"
-                  placeholder="Enter your password"
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                  }}
-                />
-              </div>
-              <button
-                type="submit"
-                className="grid  cursor-pointer select-none rounded-md border border-slate-500 bg-slate-500 py-2 px-5 text-center align-middle text-sm text-white shadow hover:border-slate-600 hover:bg-slate-600 hover:text-white focus:border-slate-600 focus:bg-slate-600 focus:text-white focus:shadow-none"
-                onClick={handleSubmit}
-              >
-                Login
-              </button>
-
-              {!isValid && <p style={{ color: "red" }}>Worng Password!</p>}
-              <div className="flex gap-1 w-full justify-center items-center text-center my-4">
-                <p> Are you user? </p>
-                <Link href={"/userLogin"} className="text-red-600">
-                  {" "}
-                  user
-                </Link>
-              </div>
-            </form>
+        <h1 className="text-3xl font-bold text-center  text-gray-800 mb-6">
+          Admin Login
+        </h1>
+        <form onSubmit={handleSubmit}>
+          <div className="my-2">
+            <label
+              htmlFor="password"
+              className="block text-xs font-medium uppercase text-gray-700"
+            >
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              className="w-full my-1 py-2 px-3 border border-gray-400 rounded-md focus:outline-none focus:border-blue-500"
+              placeholder="Enter your password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </div>
+          <button
+            type="submit"
+            className="w-full py-2 px-4 bg-blue-500 text-white rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
+          >
+            Login
+          </button>
+          {!isValid && (
+            <p className="text-red-500 text-sm mt-2">Wrong Password!</p>
+          )}
+        </form>
+        <div className="flex justify-center items-center mt-4">
+          <p className="text-sm text-gray-600">Are you a user?</p>
+          <Link href="/userLogin" className="text-sm text-red-600 ml-1">
+            Go to User Login
+          </Link>
         </div>
       </div>
     </div>
