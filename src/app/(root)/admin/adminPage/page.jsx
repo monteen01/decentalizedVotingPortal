@@ -4,6 +4,7 @@ import VotingSystem from "../../../../../contract/build/contracts/VotingSystem.j
 import Web3 from "web3";
 import Navbar from "../../../../components/Navbar";
 import { Toaster, toast } from "react-hot-toast";
+// import { useWinner } from "../../../../context/WinnerContext.js";
 const adminPage = () => {
   const [web3, setWeb3] = useState(null);
   const [contract, setContract] = useState(null);
@@ -14,8 +15,10 @@ const adminPage = () => {
   const [error, setError] = useState("");
   const [candidates, setCandidates] = useState([]);
   // displaying the winner
+  // const { setWinner } = useWinner();
   const [winningParty, setWinningParty] = useState("");
   const [winningSeats, setWinningSeats] = useState(0);
+
   //testing
   const [totalCandidateVotes, setTotalCandidateVotes] = useState({});
   const [totalPartyVotes, setTotalPartyVotes] = useState({});
@@ -29,7 +32,8 @@ const adminPage = () => {
   };
   const errorToast = (message) => {
     toast.error(message, {
-      position: "top-center", // Adjust position as desired
+      position: "top-center",
+      autoClose: 5000, // Adjust position as desired
     });
   };
   useEffect(() => {
@@ -135,8 +139,11 @@ const adminPage = () => {
         .getOverallWinningParty()
         .call();
       setWinningParty(winningParty[0]);
-      setWinningSeats(winningParty[1]);
-      console.log(winningParty[0]);
+      setWinningSeats(parseInt(winningParty[1], 16));
+      // setWinner({ party: winningParty, seats: winningSeats });
+      // successToast(`Winning party is ${winningParty[0]} with 1 Seats `);
+
+      console.log(winningParty[0], winningParty[1]);
     } catch (error) {
       console.error("Error calculating winner:", error);
       setError("Failed to calculate winner");
@@ -278,7 +285,7 @@ const adminPage = () => {
               <p className="text-sm font-semibold text-green-800">
                 Winning Party: {winningParty}
               </p>
-              {/* <p className="text-sm font-semibold">Seats: {winningSeats}</p> */}
+              <p className="text-sm font-semibold">Seats: {winningSeats}</p>
             </div>
           )}
         </div>
