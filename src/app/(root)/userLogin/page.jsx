@@ -38,7 +38,7 @@ const Login = () => {
     const Gen = genrateOtp();
     // alert(Gen)
 
-    const user = Object.values(voterUsers).find((user) => user.voterID);
+    const user = Object.values(voterUsers).find(user => user.voterID === voterID);
     var email = user.email;
 
     //  console.log(email)
