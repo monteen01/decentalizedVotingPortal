@@ -19,14 +19,13 @@ contract VotingSystem{
         string name;
         string leadingParty;
         uint totalVote;
-
     }
 
     string[] public Pr;
     struct Party{
         string name;
-        uint totalvotes;
         uint totalSeatsWon;
+        uint totalvotes;
     }
 
     mapping(uint => Candidate) public candidates;
@@ -38,6 +37,8 @@ contract VotingSystem{
     uint public partiesCount;
 
     mapping(address => bool) public voters;
+    //!additional function mapping
+    mapping(string => uint) public totalCandidateVotes;
 
     modifier onlyAdmin() {
         require(msg.sender == admin, "Only admin can perform this action");
@@ -72,13 +73,20 @@ contract VotingSystem{
         
     }
 
+    // remove candidates
+    function removeCandidate(uint _candidateId) public onlyAdmin {
+        require(_candidateId > 0 && _candidateId <= candidatesCount, "Invalid candidate ID");
+        delete candidates[_candidateId];
+        // You might want to implement logic here to reorganize candidate IDs if needed
+     }
+
     function vote(uint _candidateId) public {
         require(!voters[msg.sender], "You have already voted");
         require(_candidateId > 0 && _candidateId <= candidatesCount, "Invalid candidate ID");
         Candidate storage candidate = candidates[_candidateId];
         candidate.voteCount++;
-        parties[candidate.party].totalvotes++;
         voters[msg.sender] = true;
+        parties[candidate.party].totalvotes++;
     
         if(areas[candidate.area].totalVote<candidate.voteCount){
             areas[candidate.area].totalVote=candidate.voteCount;
@@ -86,6 +94,22 @@ contract VotingSystem{
         }
         
     }
+
+    
+    function returnCandidateVotes(string memory _candidatename) public view returns (uint){
+        for(uint i=1;i<=candidatesCount;i++){
+            if(keccak256(abi.encodePacked(candidates[i].name)) == keccak256(abi.encodePacked(_candidatename))){
+                return(candidates[i].voteCount);
+            }
+        }
+        return 0;
+    }
+
+    function returnAreaWinner(string memory _areaname) public view returns(string memory,uint){
+        return (areas[_areaname].leadingParty,areas[_areaname].totalVote);
+    }
+
+
     function calculateWinner() public{
         for(uint i=0;i<areasCount;i++){
             parties[areas[Ar[i]].leadingParty].totalSeatsWon++;
