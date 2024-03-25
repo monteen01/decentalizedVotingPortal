@@ -1,8 +1,9 @@
 import React from "react";
 import { voterUsers } from "../constants/index";
 const VotersArea = () => {
-  // const user = voterUsers[user];
+  
   const { userName, voterID } = voterUsers.user1;
+  
   return (
     <div className="min-w-full min-h-[100vh] font-sans overflow-hidden  bg-gradient-to-b from-zinc-900 to-blue-600 text-[#FFF3C7] p-2 ">
       <section className="mt-2 mx-3 flex justify-between overflow-hidden">

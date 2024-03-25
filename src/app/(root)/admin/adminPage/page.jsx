@@ -167,13 +167,15 @@ const adminPage = () => {
     try {
       setLoading(true);
       const areaCountResult = await contract.methods.areasCount().call();
-      const partiesCountResult = await contract.methods.partiesCount().call();
+      const partiesCountResult = await contract.methods.partiesCount().call(0);
       const candidatesCountResult = await contract.methods
         .candidatesCount()
         .call();
       const overallWinnerResult = await contract.methods
         .getOverallWinningParty()
         .call();
+        //! add here
+        
       setAreaCount(parseInt(areaCountResult), 16);
       setPartiesCount(parseInt(partiesCountResult), 16);
       setCandidatesCount(parseInt(candidatesCountResult), 16);

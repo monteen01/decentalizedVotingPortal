@@ -26,21 +26,52 @@ const Profile = () => {
       position: "top-center", // Adjust position as desired
     });
   };
+  // useEffect(() => {
+  //   const initializeWeb3 = async () => {
+  //     try {
+  //       const provider = new Web3.providers.HttpProvider(
+  //         "HTTP://127.0.0.1:7545"
+  //       );
+  //       const web3Instance = new Web3(provider);
+  //       const networkId = await web3Instance.eth.net.getId();
+  //       const deployedNetwork = VotingSystem.networks[networkId];
+  //       const contractInstance = new web3Instance.eth.Contract(
+  //         VotingSystem.abi,
+  //         deployedNetwork.address
+  //       );
+  //       setWeb3(web3Instance);
+  //       setContract(contractInstance);
+  //     } catch (error) {
+  //       console.error("Error initializing Web3:", error);
+  //     }
+  //   };
+  //   initializeWeb3();
+  // }, []);
   useEffect(() => {
     const initializeWeb3 = async () => {
       try {
-        const provider = new Web3.providers.HttpProvider(
-          "HTTP://127.0.0.1:7545"
-        );
-        const web3Instance = new Web3(provider);
-        const networkId = await web3Instance.eth.net.getId();
-        const deployedNetwork = VotingSystem.networks[networkId];
-        const contractInstance = new web3Instance.eth.Contract(
-          VotingSystem.abi,
-          deployedNetwork.address
-        );
-        setWeb3(web3Instance);
-        setContract(contractInstance);
+        // Check if MetaMask is installed
+        if (window.ethereum) {
+          // Create a new Web3 instance using MetaMask's provider
+          const web3Instance = new Web3(window.ethereum);
+          // Request user permission to connect to MetaMask
+          await window.ethereum.enable();
+          // Get the network ID
+          const networkId = await web3Instance.eth.net.getId();
+          // Get the deployed network data from the contract ABI
+          const deployedNetwork = VotingSystem.networks[networkId];
+          // Create a contract instance using the deployed contract address
+          const contractInstance = new web3Instance.eth.Contract(
+            VotingSystem.abi,
+            deployedNetwork && deployedNetwork.address
+          );
+          // Set the web3 and contract instances in state
+          setWeb3(web3Instance);
+          setContract(contractInstance);
+        } else {
+          // MetaMask not found, handle accordingly
+          console.error("MetaMask not detected");
+        }
       } catch (error) {
         console.error("Error initializing Web3:", error);
       }
@@ -90,7 +121,7 @@ const Profile = () => {
       );
     } catch (error) {
       console.error("Error voting:", error);
-      errorToast("Failed to vote");
+      errorToast("Already voted");
     } finally {
       setLoading(false);
     }
