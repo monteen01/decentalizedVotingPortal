@@ -12,7 +12,7 @@ const adminPage = () => {
   const [areaCount, setAreaCount] = useState(0);
   const [partiesCount, setPartiesCount] = useState(0);
   const [candidatesCount, setCandidatesCount] = useState(0);
-
+  const [TotalVotes, setTotalVotes] = useState(0);
   const [web3, setWeb3] = useState(null);
   const [contract, setContract] = useState(null);
   const [name, setName] = useState("");
@@ -148,6 +148,7 @@ const adminPage = () => {
         .call();
       setWinningParty(winningParty[0]);
       setWinningSeats(parseInt(winningParty[1], 16));
+      setTotalVotes(parseInt(winningParty[2], 16));
       // setWinner({ party: winningParty, seats: winningSeats });
       // successToast(
       //   `Winning party is ${winningParty[0]} with ${winningParty[1]} Seats `
@@ -174,12 +175,17 @@ const adminPage = () => {
       const overallWinnerResult = await contract.methods
         .getOverallWinningParty()
         .call();
-        //! add here
-        
+      // const TotalCandidatesVote = await contract.methods
+      //   .calculateTotalVotes()
+      //   .call();
+      //   const returnVote = await contract.methods.returncandidate().send(a);
+      // //! add here
+
       setAreaCount(parseInt(areaCountResult), 16);
       setPartiesCount(parseInt(partiesCountResult), 16);
       setCandidatesCount(parseInt(candidatesCountResult), 16);
       setWinningParty(overallWinnerResult[0]);
+
       // console.log(areaCountResult, candidatesCountResult, partiesCountResult);
     } catch (error) {
       console.error("Error fetching contract information:", error);
@@ -197,7 +203,7 @@ const adminPage = () => {
       <Navbar />
       <Toaster />
 
-      <div className="flex pt-12  md:justify-center flex-col md:flex-row items-start min-h-screen bg-gradient-to-r from-[#1488CC] to-[#2B32B2]">
+      <div className="flex pt-12 justify-center flex-col md:flex-row items-start min-h-screen bg-gradient-to-r from-[#1488CC] to-[#2B32B2]">
         <div className="w-full my-4 sm:w-[30rem] bg-white rounded-lg shadow-lg p-6 mr-4">
           <h1 className="text-xl font-bold mb-4 text-gray-800">
             Add Candidate
@@ -304,6 +310,9 @@ const adminPage = () => {
                   <span className="uppercase"> {winningParty}</span>
                 </p>
                 <p className="text-sm font-semibold">Seats: {winningSeats}</p>
+                <p className="text-sm font-semibold">
+                  Total Votes: {TotalVotes}
+                </p>
               </div>
               <hr className="w-full h-0.5 rounded-md bg-red-700" />
               <div className="flex  justify-start items-center mt-8">
@@ -333,6 +342,22 @@ const adminPage = () => {
             </div>
           )}
         </div>
+        {/* <div className="mb-4">
+          <label
+            htmlFor="TotalVotes"
+            className="block text-xs font-medium uppercase text-gray-700"
+          >
+            Total Votes
+          </label>
+          <input
+            type="text"
+            className="block w-full rounded-md border border-gray-400 bg-white py-2 px-3 text-sm focus:outline-none focus:border-blue-500"
+            name="TotalVotes"
+            value={TotalVotes}
+            onChange={(e) => setTotalVotes(e.target.value)}
+          />
+          <button type="submit">Get Votes</button>
+        </div> */}
       </div>
       <Footer />
     </div>

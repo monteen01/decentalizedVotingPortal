@@ -5,6 +5,7 @@ contract VotingSystem{
     address public admin;
     string public winningParty;
     uint public Seats = 0;
+    uint public tv=0;
     struct Candidate {
         uint id;
         string name;
@@ -24,6 +25,7 @@ contract VotingSystem{
     struct Party{
         string name;
         uint totalSeatsWon;
+        uint totalvotes;
     }
 
     mapping(uint => Candidate) public candidates;
@@ -66,7 +68,7 @@ contract VotingSystem{
         }
         else{
             partiesCount++;
-            parties[_party]=Party(_party,0);
+            parties[_party]=Party(_party,0,0);
             Pr.push(_party);
         }
         
@@ -86,6 +88,7 @@ contract VotingSystem{
         Candidate storage candidate = candidates[_candidateId];
         candidate.voteCount++;
         voters[msg.sender] = true;
+            parties[candidate.party].totalvotes++;
     
         if(areas[candidate.area].totalVote<candidate.voteCount){
             areas[candidate.area].totalVote=candidate.voteCount;
@@ -111,6 +114,9 @@ function calculateTotalVotes() public {
         totalAreaVotes[Ar[i]] = areas[Ar[i]].totalVote;
     }
 }
+function returncandidate(string memory a) public view returns (uint){
+        return (totalCandidateVotes[a]);
+    }
 
 
     function calculateWinner() public{
@@ -123,10 +129,11 @@ function calculateTotalVotes() public {
                 winningParty=Pr[i];
             }
         }
+        tv=parties[winningParty].totalvotes;
 
     }
 
-    function getOverallWinningParty() public view returns (string memory, uint) {
-        return(winningParty,Seats);
+    function getOverallWinningParty() public view returns (string memory, uint, uint) {
+        return(winningParty,Seats, tv);
     }
 }
