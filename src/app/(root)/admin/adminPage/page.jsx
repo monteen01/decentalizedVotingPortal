@@ -4,8 +4,15 @@ import VotingSystem from "../../../../../contract/build/contracts/VotingSystem.j
 import Web3 from "web3";
 import Navbar from "../../../../components/Navbar";
 import { Toaster, toast } from "react-hot-toast";
+import Loader from "@/components/loading";
+import Footer from "@/components/Footer";
 // import { useWinner } from "../../../../context/WinnerContext.js";
 const adminPage = () => {
+  // State declarations...
+  const [areaCount, setAreaCount] = useState(0);
+  const [partiesCount, setPartiesCount] = useState(0);
+  const [candidatesCount, setCandidatesCount] = useState(0);
+
   const [web3, setWeb3] = useState(null);
   const [contract, setContract] = useState(null);
   const [name, setName] = useState("");
@@ -82,7 +89,7 @@ const adminPage = () => {
   useEffect(() => {
     fetchCandidates();
   }, [contract]);
-
+  //! adding the candidates
   const addCandidate = async () => {
     try {
       setLoading(true);
@@ -118,6 +125,7 @@ const adminPage = () => {
       setName("");
       setArea("");
       setParty("");
+      fetchCandidates();
     } catch (error) {
       console.error("Error removing candidate:", error);
       setError("Failed to remove candidate");
@@ -141,9 +149,11 @@ const adminPage = () => {
       setWinningParty(winningParty[0]);
       setWinningSeats(parseInt(winningParty[1], 16));
       // setWinner({ party: winningParty, seats: winningSeats });
-      // successToast(`Winning party is ${winningParty[0]} with 1 Seats `);
+      // successToast(
+      //   `Winning party is ${winningParty[0]} with ${winningParty[1]} Seats `
+      // );
 
-      console.log(winningParty[0], winningParty[1]);
+      // console.log(winningParty[0], winningParty[1]);
     } catch (error) {
       console.error("Error calculating winner:", error);
       setError("Failed to calculate winner");
@@ -151,44 +161,45 @@ const adminPage = () => {
       setLoading(false);
     }
   };
-  //!calucate the votes
-  // const calculateTotalVotes = async () => {
-  //   try {
-  //     setLoading(true);
-  //     await contract.methods.calculateTotalVotes().send({
-  //       from: (await web3.eth.getAccounts())[0],
-  //       gas: 6000000,
-  //     });
-  //     alert("Total votes calculated successfully!");
-  //     // Fetch and update total votes for candidates, parties, and areas
-  //     const candidateVotes = await contract.methods
-  //       .totalCandidateVotes()
-  //       .call();
-  //     const partyVotes = await contract.methods.totalPartyVotes().call();
-  //     const areaVotes = await contract.methods.totalAreaVotes().call();
-  //     setTotalCandidateVotes(candidateVotes);
-  //     setTotalPartyVotes(partyVotes);
-  //     setTotalAreaVotes(areaVotes);
-  //     console.log(candidateVotes, areaVotes, partyVotes);
-  //   } catch (error) {
-  //     console.error("Error calculating total votes:", error);
-  //     setError("Failed to calculate total votes: " + error.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
 
+  // Function to fetch additional information from the contract
+  const fetchContractInfo = async () => {
+    try {
+      setLoading(true);
+      const areaCountResult = await contract.methods.areasCount().call();
+      const partiesCountResult = await contract.methods.partiesCount().call();
+      const candidatesCountResult = await contract.methods
+        .candidatesCount()
+        .call();
+      const overallWinnerResult = await contract.methods
+        .getOverallWinningParty()
+        .call();
+      setAreaCount(parseInt(areaCountResult), 16);
+      setPartiesCount(parseInt(partiesCountResult), 16);
+      setCandidatesCount(parseInt(candidatesCountResult), 16);
+      setWinningParty(overallWinnerResult[0]);
+      // console.log(areaCountResult, candidatesCountResult, partiesCountResult);
+    } catch (error) {
+      console.error("Error fetching contract information:", error);
+      setError("Failed to fetch contract information");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchContractInfo();
+  }, [contract]);
   return (
-    <div className="min-h-screen ">
+    <div className="min-h-screen overflow-hidden  ">
       <Navbar />
       <Toaster />
 
-      <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-[#1488CC] to-[#2B32B2]">
-        <div className="w-full sm:w-[30rem] bg-white rounded-lg shadow-lg p-6">
+      <div className="flex pt-12  md:justify-center flex-col md:flex-row items-start min-h-screen bg-gradient-to-r from-[#1488CC] to-[#2B32B2]">
+        <div className="w-full my-4 sm:w-[30rem] bg-white rounded-lg shadow-lg p-6 mr-4">
           <h1 className="text-xl font-bold mb-4 text-gray-800">
             Add Candidate
           </h1>
-          {/* Form to add candidate */}
           <div className="mb-4">
             <label className="block text-xs font-medium uppercase text-gray-700">
               Name
@@ -233,44 +244,47 @@ const adminPage = () => {
           >
             Add Candidate
           </button>
-
-          {/* Display candidates */}
-          <div className="mt-6">
-            <h2 className="text-lg font-semibold mb-4 text-gray-800">
-              Candidates:
-            </h2>
-            <ul>
-              {candidates.map((candidate, index) => (
-                <li key={index} className="border-b border-gray-400 py-3">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <p className="text-sm font-semibold">
-                        Name: {candidate.name}
-                      </p>
-                      <p className="text-sm font-semibold">
-                        Area: {candidate.area}
-                      </p>
-                      <p className="text-sm font-semibold">
-                        Party: {candidate.party}
-                      </p>
-                    </div>
-                    <button
-                      className="text-red-500 border border-red-500 py-1 px-3 rounded-md shadow-md hover:bg-red-300 focus:outline-none focus:bg-red-300"
-                      onClick={() => removeCandidate(candidate.id)}
-                      disabled={loading}
-                    >
-                      Remove
-                    </button>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-          {loading && <p className="text-gray-800 mt-4">Loading...</p>}
-          {error && <p className="text-red-600 mt-4">{error}</p>}
         </div>
 
-        <div className="ml-4">
+        <div className="w-full my-4 sm:w-[30rem] bg-white rounded-lg shadow-lg p-6 mr-4">
+          <h2 className="text-lg font-semibold mb-4 text-gray-800">
+            Candidates:
+          </h2>
+          <ul>
+            {candidates.map((candidate, index) => (
+              <li key={index} className="border-b border-gray-400 py-3">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="text-sm font-semibold">
+                      Name: {candidate.name}
+                    </p>
+                    <p className="text-sm font-semibold">
+                      Area: {candidate.area}
+                    </p>
+                    <p className="text-sm font-semibold">
+                      Party: {candidate.party}
+                    </p>
+                  </div>
+                  <button
+                    className="text-red-500 border border-red-500 py-1 px-3 rounded-md shadow-md hover:bg-red-300 focus:outline-none focus:bg-red-300"
+                    onClick={() => removeCandidate(candidate.id)}
+                    disabled={loading}
+                  >
+                    Remove
+                  </button>
+                </div>
+              </li>
+            ))}
+          </ul>
+          {loading && (
+            <div className="text-gray-800 mt-4">
+              <Loader />
+            </div>
+          )}
+          {/* {error && <p className="text-red-600 mt-4">{error}</p>} */}
+        </div>
+
+        <div className="w-full my-4 sm:w-[30rem] bg-white rounded-lg shadow-lg p-6">
           <button
             type="button"
             className="w-full bg-blue-500 text-white py-2 px-4 rounded-md shadow-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600"
@@ -279,17 +293,46 @@ const adminPage = () => {
           >
             Calculate Winner
           </button>
-          {/* Display winning party and seats */}
+          {/*  winning party and seats */}
           {winningParty && (
-            <div className="mt-4 bg-green-300 rounded-lg shadow-md p-3">
-              <p className="text-sm font-semibold text-green-800">
-                Winning Party: {winningParty}
-              </p>
-              <p className="text-sm font-semibold">Seats: {winningSeats}</p>
+            <div className="mt-4  rounded-lg shadow-md p-3 bg-slate-300 ">
+              <div className="bg-green-300  p-3">
+                <p className="text-sm font-semibold text-green-800">
+                  Winning Party:{" "}
+                  <span className="uppercase"> {winningParty}</span>
+                </p>
+                <p className="text-sm font-semibold">Seats: {winningSeats}</p>
+              </div>
+              <hr className="w-full h-0.5 rounded-md bg-red-700" />
+              <div className="flex  justify-start items-center mt-8">
+                <div className="bg-white rounded-lg  p-6">
+                  <h2 className="text-lg font-semibold  text-gray-800">
+                    Contract Information
+                  </h2>
+                  <hr className="w-full mb-2 shadow-sm" />
+                  <p className="text-sm">
+                    Area Count:{" "}
+                    <span className="font-semibold">{areaCount}</span>
+                  </p>
+                  <p className="text-sm">
+                    Parties Count:{" "}
+                    <span className="font-semibold">{partiesCount}</span>
+                  </p>
+                  <p className="text-sm">
+                    Candidates Count:{" "}
+                    <span className="font-semibold">{candidatesCount}</span>
+                  </p>
+                  <p className="text-sm">
+                    Winning Party:{" "}
+                    <span className="font-semibold">{winningParty}</span>
+                  </p>
+                </div>
+              </div>
             </div>
           )}
         </div>
       </div>
+      <Footer />
     </div>
   );
 };

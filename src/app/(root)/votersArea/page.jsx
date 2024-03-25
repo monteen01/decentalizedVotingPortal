@@ -24,7 +24,7 @@ const VotersArea = () => {
                 </div>
                 <div className="flex items-center">
                   <a
-                    href="/profile"
+                    href="/userLogin"
                     className="mr-6 inline-flex h-12 items-center justify-center rounded bg-gradient-to-r from-blue-900 to-blue-500 px-6 font-medium tracking-wide text-white shadow-md outline-none transition duration-200 hover:bg-cyan-400 focus:ring"
                   >
                     {" "}

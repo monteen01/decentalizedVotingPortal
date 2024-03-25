@@ -5,6 +5,8 @@ import Web3 from "web3";
 import VotingSystem from "../../../../contract/build/contracts/VotingSystem.json";
 import Navbar from "../../../components/Navbar";
 import { Toaster, toast } from "react-hot-toast";
+import Loader from "@/components/loading";
+import Footer from "@/components/Footer";
 
 const Profile = () => {
   const [web3, setWeb3] = useState(null);
@@ -140,9 +142,14 @@ const Profile = () => {
             </button>
           </div>
         )}
-        {loading && <p className="text-white mt-8">Loading...</p>}
+        {loading && (
+          <div className="text-white mt-8">
+            <Loader />
+          </div>
+        )}
         {error && <p style={{ color: "red" }}>{error}</p>}
       </div>
+      <Footer />
     </div>
   );
 };
