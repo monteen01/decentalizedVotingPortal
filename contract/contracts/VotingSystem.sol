@@ -38,9 +38,7 @@ contract VotingSystem{
 
     mapping(address => bool) public voters;
     //!additional function mapping
-  mapping(string => uint) public totalCandidateVotes;
-  mapping(string => uint) public totalPartyVotes;
-  mapping(string => uint) public totalAreaVotes;
+    mapping(string => uint) public totalCandidateVotes;
 
     modifier onlyAdmin() {
         require(msg.sender == admin, "Only admin can perform this action");
@@ -88,7 +86,9 @@ contract VotingSystem{
         Candidate storage candidate = candidates[_candidateId];
         candidate.voteCount++;
         voters[msg.sender] = true;
-            parties[candidate.party].totalvotes++;
+
+        parties[candidate.party].totalvotes++;
+
     
         if(areas[candidate.area].totalVote<candidate.voteCount){
             areas[candidate.area].totalVote=candidate.voteCount;
@@ -97,26 +97,25 @@ contract VotingSystem{
         
     }
 
-    //! additional function
-function calculateTotalVotes() public {
-    // Iterate through candidates and calculate total votes for each candidate
-    for (uint i = 1; i <= candidatesCount; i++) {
-        totalCandidateVotes[candidates[i].name] = candidates[i].voteCount;
+    
+    function returnCandidateVotes(string memory _candidatename) public view returns (uint){
+        for(uint i=1;i<=candidatesCount;i++){
+            if(keccak256(abi.encodePacked(candidates[i].name)) == keccak256(abi.encodePacked(_candidatename))){
+                return(candidates[i].voteCount);
+            }
+        }
+        return 0;
     }
 
-    // Iterate through parties and calculate total votes for each party
-    for (uint i = 0; i < Pr.length; i++) {
-        totalPartyVotes[Pr[i]] = parties[Pr[i]].totalSeatsWon;
+    function returnAreaWinner(string memory _areaname) public view returns(string memory,uint){
+        return (areas[_areaname].leadingParty,areas[_areaname].totalVote);
     }
 
-    // Iterate through areas and calculate total votes for each area
-    for (uint i = 0; i < Ar.length; i++) {
-        totalAreaVotes[Ar[i]] = areas[Ar[i]].totalVote;
-    }
 }
 function returncandidate(string memory a) public view returns (uint){
         return (totalCandidateVotes[a]);
     }
+
 
 
     function calculateWinner() public{
@@ -133,7 +132,8 @@ function returncandidate(string memory a) public view returns (uint){
 
     }
 
-    function getOverallWinningParty() public view returns (string memory, uint, uint) {
-        return(winningParty,Seats, tv);
+    function getOverallWinningParty() public view returns (string memory, uint,uint) {
+        return(winningParty,Seats,tv);
+
     }
 }
