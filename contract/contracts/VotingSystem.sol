@@ -86,7 +86,9 @@ contract VotingSystem{
         Candidate storage candidate = candidates[_candidateId];
         candidate.voteCount++;
         voters[msg.sender] = true;
+
         parties[candidate.party].totalvotes++;
+
     
         if(areas[candidate.area].totalVote<candidate.voteCount){
             areas[candidate.area].totalVote=candidate.voteCount;
@@ -109,6 +111,12 @@ contract VotingSystem{
         return (areas[_areaname].leadingParty,areas[_areaname].totalVote);
     }
 
+}
+function returncandidate(string memory a) public view returns (uint){
+        return (totalCandidateVotes[a]);
+    }
+
+
 
     function calculateWinner() public{
         for(uint i=0;i<areasCount;i++){
@@ -126,5 +134,6 @@ contract VotingSystem{
 
     function getOverallWinningParty() public view returns (string memory, uint,uint) {
         return(winningParty,Seats,tv);
+
     }
 }
