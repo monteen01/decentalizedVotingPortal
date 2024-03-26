@@ -30,6 +30,9 @@ const adminPage = () => {
   const [totalCandidateVotes, setTotalCandidateVotes] = useState({});
   const [totalPartyVotes, setTotalPartyVotes] = useState({});
   const [totalAreaVotes, setTotalAreaVotes] = useState({});
+  //return candidateVotes
+  const [candidateName, setCandidateName] = useState("");
+  const [candidateVotes, setCandidateVotes] = useState(0);
   // toast
   const successToast = (message) => {
     toast.success(message, {
@@ -198,6 +201,24 @@ const adminPage = () => {
   useEffect(() => {
     fetchContractInfo();
   }, [contract]);
+
+  // Function to fetch candidate votes from the contract
+  const fetchCandidateVotes = async () => {
+    try {
+      const candidateVotes = await contract.methods
+        .returnCandidateVotes(candidateName)
+        .call();
+      setCandidateVotes(parseInt(candidateVotes), 16);
+      console.log("votes:" + candidateVotes);
+    } catch (error) {
+      console.error("Error fetching candidate votes:", error);
+    }
+  };
+  //return candidates
+  const handleCandidateNameChange = (event) => {
+    setCandidateName(event.target.value);
+  };
+
   return (
     <div className="min-h-screen overflow-hidden  ">
       <Navbar />
@@ -315,8 +336,8 @@ const adminPage = () => {
                 </p>
               </div>
               <hr className="w-full h-0.5 rounded-md bg-red-700" />
-              <div className="flex  justify-start items-center mt-8">
-                <div className="bg-white rounded-lg  p-6">
+              <div className="flex w-full  justify-start items-start mt-8">
+                <div className="bg-white rounded-lg w-full  p-6">
                   <h2 className="text-lg font-semibold  text-gray-800">
                     Contract Information
                   </h2>
@@ -337,27 +358,37 @@ const adminPage = () => {
                     Winning Party:{" "}
                     <span className="font-semibold">{winningParty}</span>
                   </p>
+                  {/* return cadidates votes */}
+                  <div className="border bg-slate-200 rounded-md  p-3 shadow-sm my-2 flex flex-col justify-start items-start">
+                    <label className="text-gray-500 font-semibold">
+                      Candidate Name:
+                    </label>
+                    <input
+                      type="text"
+                      value={candidateName}
+                      onChange={handleCandidateNameChange}
+                      className="block my-2 w-full rounded-md border border-gray-400 bg-white py-2 px-3 text-sm focus:outline-none focus:border-red-500"
+                    />
+                    <button
+                      className="w-full bg-blue-500 text-white py-2 px-4 rounded-md shadow-sm hover:bg-blue-600 focus:outline-none focus:bg-blue-600 "
+                      onClick={fetchCandidateVotes}
+                    >
+                      Get Votes
+                    </button>
+                    {candidateVotes !== null && (
+                      <div className="bg-green-300 w-full shadow-sm rounded-md text-lg p-2 my-2 font-semibold">
+                        <h1 className="text-green-700">
+                          Total Votes: {candidateVotes}
+                        </h1>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </div>
+              {/* return the cadidates total */}
             </div>
           )}
         </div>
-        {/* <div className="mb-4">
-          <label
-            htmlFor="TotalVotes"
-            className="block text-xs font-medium uppercase text-gray-700"
-          >
-            Total Votes
-          </label>
-          <input
-            type="text"
-            className="block w-full rounded-md border border-gray-400 bg-white py-2 px-3 text-sm focus:outline-none focus:border-blue-500"
-            name="TotalVotes"
-            value={TotalVotes}
-            onChange={(e) => setTotalVotes(e.target.value)}
-          />
-          <button type="submit">Get Votes</button>
-        </div> */}
       </div>
       <Footer />
     </div>

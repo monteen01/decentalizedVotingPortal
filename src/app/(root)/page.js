@@ -1,26 +1,32 @@
 import Link from "next/link";
 import Image from "next/image";
+import Layout from "./layout";
 
 export default function Home() {
   return (
     <main>
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center ">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/background.svg"
+            src="/background4.jpg"
             alt="backgroundimg"
-            layout="fill"
-            objectFit="cover"
+            style={{ objectFit: "cover" }}
+            fill={true}
+            // width={500}
+            // height={500}
             quality={100}
           />
         </div>
-        
+
         {/* Login and Admin Forms */}
         <div className="relative z-10">
-          <div className="sm:w-[30rem] bg-white rounded-lg shadow-lg px-4 py-6">
+          <div
+            className="sm:w-[30rem]  backdrop-filter backdrop-blur-lg bg-opacity-20 border border-gray-100
+ rounded-lg shadow-lg px-4 py-6"
+          >
             <div className="flex items-center justify-center mb-10">
-              <h1 className="text-3xl font-black text-slate-600">
+              <h1 className="text-3xl font-black text-slate-100">
                 Login To Vote
               </h1>
             </div>
@@ -44,7 +50,7 @@ export default function Home() {
                 </Link>
                 <Link
                   href="/admin"
-                  className="mt-4 rounded-lg border-2 border-blue-700 px-6 py-2 font-medium text-blue-700 transition hover:translate-y-1"
+                  className="mt-4 rounded-lg   border-2 border-white  hover:border-gray-200 hover:text-gray-200 px-6 py-2 font-medium text-slate-100 transition hover:translate-y-1"
                 >
                   admin
                 </Link>
