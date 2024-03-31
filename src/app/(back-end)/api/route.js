@@ -1,4 +1,3 @@
-"use server";
 import { sendMail } from "./sendEmail";
 import otpGenerator from "otp-generator";
 
@@ -8,11 +7,10 @@ export const send = async (email) => {
     specialChars: false,
   });
 
-  
   await sendMail({
     to: email,
     name: "Admin",
-    subject: "OTP",
+    subject: "OTP for decentralized Online Voting Portal",
     body: `your otp is <h1>${generatedOtp} </h1>`,
   });
 };

@@ -59,7 +59,7 @@ const Login = () => {
     e.preventDefault();
     if (genOtp === otp) {
       setIsVerified(true);
-      router.push("/votersArea");
+      router.push("/profile");
     } else {
       setIsVerified(false);
       toast.error("Wrong OTP", {

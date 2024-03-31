@@ -1,12 +1,11 @@
 import Link from "next/link";
 import React from "react";
-// import Link from "next/link"
 const Navbar = () => {
   return (
     <header className="shadow ">
       <div className="relative flex max-w-screen-xl flex-col overflow-hidden px-4 py-4 md:mx-auto md:flex-row md:items-center">
         <a
-          href="#"
+          href="/"
           className="flex items-center whitespace-nowrap text-2xl font-black"
         >
           <span className="text-black">Web3 Voting Portal</span>

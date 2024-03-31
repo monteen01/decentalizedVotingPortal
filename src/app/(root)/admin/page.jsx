@@ -3,8 +3,8 @@
 import { admin } from "../constants/index";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { Toaster, toast } from "react-hot-toast";
+import Link from "next/link";
 
 const adminLogin = () => {
   const [password, setPassword] = useState("");
