@@ -28,10 +28,9 @@ const CreateUser = () => {
         body: JSON.stringify(user),
       });
       if (res.ok) {
-        // Handle success, maybe redirect or show a success message
+        
         alert('User created successfully');
       } else {
-        // Handle error, maybe show an error message
         alert('Failed to create user');
       }
     } catch (error) {
