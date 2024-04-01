@@ -29,10 +29,10 @@ const CreateUser = () => {
       });
       if (res.ok) {
         // Handle success, maybe redirect or show a success message
-        console.log('User created successfully');
+        alert('User created successfully');
       } else {
         // Handle error, maybe show an error message
-        console.error('Failed to create user');
+        alert('Failed to create user');
       }
     } catch (error) {
       console.error('Error:', error);
