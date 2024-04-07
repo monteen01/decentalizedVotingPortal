@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React from "react";
-const Navbar = () => {
+const Navbar = async () => {
   return (
     <header className="shadow ">
       <div className="relative flex max-w-screen-xl flex-col overflow-hidden px-4 py-4 md:mx-auto md:flex-row md:items-center">
@@ -46,7 +46,7 @@ const Navbar = () => {
               <a href="/">candidate</a>
             </li>
             <li className="text-gray-600 md:mr-12 py-2 hover:text-blue-600">
-              <Link
+             <Link
                 href="/"
                 className="rounded-md border-2 border-blue-600 px-6 py-1  font-medium text-blue-600 transition-colors hover:bg-blue-600 hover:text-white"
               >

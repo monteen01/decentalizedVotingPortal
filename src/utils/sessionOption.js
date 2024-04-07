@@ -1,1 +1,0 @@
-import { SessionOption } from "iron-session";
